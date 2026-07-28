@@ -1,26 +1,246 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.145 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.627 0.194 260.1);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.556 0 0);
+  --radius: 0.75rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 0.25rem);
+  --radius-md: calc(var(--radius) - 0.125rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
 }
 
 body {
-  background: var(--background);
+  min-height: 100vh;
+  background-color: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Phone Input */
+.input-phone {
+  margin-top: 4px;
+  height: 36px;
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(51 65 85);
+  background-color: rgb(2 6 23);
+  padding: 0 12px;
+  font-size: 0.875rem;
+  color: white;
+}
+.input-phone .PhoneInputInput {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 0.875rem;
+}
+.input-phone .PhoneInputCountrySelect {
+  background: rgb(2 6 23);
+  color: white;
+  border: none;
+  outline: none;
+}
+
+/* Date Picker */
+.date-picker {
+  width: 100%;
+}
+.date-picker input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 0.875rem;
+  padding: 8px 12px;
+  width: 100%;
+  cursor: pointer;
+}
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
+  width: 100%;
+  display: block;
+}
+.react-datepicker__input-container input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 0.875rem;
+  padding: 8px 12px;
+  width: 100%;
+  cursor: pointer;
+}
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+.react-datepicker {
+  background-color: rgb(15 23 42) !important;
+  border: 1px solid rgb(51 65 85) !important;
+  color: white !important;
+  font-family: inherit !important;
+}
+.react-datepicker__header {
+  background-color: rgb(15 23 42) !important;
+  border-bottom: 1px solid rgb(51 65 85) !important;
+}
+.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker__day,
+.react-datepicker__time-name {
+  color: white !important;
+}
+.react-datepicker__day:hover {
+  background-color: rgb(16 185 129) !important;
+  border-radius: 0.3rem;
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: rgb(16 185 129) !important;
+  border-radius: 0.3rem;
+}
+.react-datepicker__day--outside-month {
+  color: rgb(100 116 139) !important;
+}
+.react-datepicker__navigation-icon::before {
+  border-color: white !important;
+}
+.react-datepicker__time-container,
+.react-datepicker__time,
+.react-datepicker__time-box {
+  background-color: rgb(15 23 42) !important;
+  color: white !important;
+}
+.react-datepicker__time-container {
+  border-left: 1px solid rgb(51 65 85) !important;
+}
+.react-datepicker__time-list-item {
+  color: white !important;
+  background-color: rgb(15 23 42) !important;
+}
+.react-datepicker__time-list-item:hover {
+  background-color: rgb(16 185 129) !important;
+}
+.react-datepicker__time-list-item--selected {
+  background-color: rgb(16 185 129) !important;
+}
+.react-datepicker__header--time {
+  background-color: rgb(15 23 42) !important;
+  border-bottom: 1px solid rgb(51 65 85) !important;
+  color: white !important;
+}
+.react-datepicker-time__header {
+  color: white !important;
+}
+
+/* Layout helpers */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+.animate-shake {
+  animation: shake 0.4s ease;
+}
+
+.remove-scrollbar::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  border-radius: 0px;
+}
+.sub-container {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: 2.5rem 1.25rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.header {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: white;
+}
+.sub-header {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+}
+.text-dark-700 {
+  color: rgb(148 163 184);
+}
+.copyright {
+  font-size: 0.75rem;
+  color: rgb(100 116 139);
+  text-align: center;
+}
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(51 65 85);
+  background-color: rgb(2 6 23);
+  padding: 0.625rem 1rem;
+  flex: 1;
+}
+.side-img {
+  height: 100%;
+  object-fit: cover;
 }
