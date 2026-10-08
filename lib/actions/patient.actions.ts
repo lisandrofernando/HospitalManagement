@@ -13,8 +13,12 @@ export type CreateUserParams = {
 };
 
 export const getUser = async (userId: string) => {
-  const user = await users.get(userId);
-  return { $id: user.$id, name: user.name, email: user.email, phone: user.phone };
+  try {
+    const user = await users.get(userId);
+    return parseStringify({ $id: user.$id, name: user.name, email: user.email, phone: user.phone });
+  } catch {
+    return null;
+  }
 };
 
 export const getPatient = async (userId: string) => {
@@ -22,7 +26,7 @@ export const getPatient = async (userId: string) => {
     const result = await databases.listDocuments(DATABASE_ID!, PATIENT_COLLECTION_ID!, [
       Query.equal("userid", userId),
     ]);
-    return result.documents[0] ?? null;
+    return result.documents[0] ? parseStringify(result.documents[0]) : null;
   } catch {
     return null;
   }

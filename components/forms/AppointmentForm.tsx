@@ -14,6 +14,7 @@ import { createAppointment } from "@/lib/actions/appointment.actions";
 import { getAppointmentSchema } from "@/lib/validation";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
+import { useLanguage } from "@/context/LanguageContext";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -27,6 +28,7 @@ type AppointmentFormProps = {
 
 const AppointmentForm = ({ userId, patientId, primaryPhysician, type, appointmentId }: AppointmentFormProps) => {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
 
   const AppointmentSchema = getAppointmentSchema(type);
@@ -67,15 +69,15 @@ const AppointmentForm = ({ userId, patientId, primaryPhysician, type, appointmen
     }
   };
 
-  const buttonLabel = { create: "Book Appointment", schedule: "Confirm Schedule", cancel: "Cancel Appointment" }[type];
+  const buttonLabel = { create: t("bookAppointment"), schedule: t("confirmSchedule"), cancel: t("cancelAppointment") }[type];
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex-1 space-y-6">
         {type === "create" && (
           <section className="space-y-4">
-            <h1 className="header">New Appointment</h1>
-            <p className="text-dark-700">Book your appointment in seconds.</p>
+            <h1 className="header">{t("newAppointment")}</h1>
+            <p className="text-dark-700">{t("bookInSeconds")}</p>
           </section>
         )}
 
@@ -85,8 +87,8 @@ const AppointmentForm = ({ userId, patientId, primaryPhysician, type, appointmen
               fieldType={FormFieldType.SELECT}
               control={form.control}
               name="primaryPhysician"
-              label="Doctor"
-              placeholder="Select a doctor"
+              label={t("doctor")}
+              placeholder={t("selectDoctor")}
               renderTrigger={() => {
                 const selected = Doctors.find((d) => d.name === form.watch("primaryPhysician"));
                 return selected ? (
@@ -111,7 +113,7 @@ const AppointmentForm = ({ userId, patientId, primaryPhysician, type, appointmen
               fieldType={FormFieldType.DATE_PICKER}
               control={form.control}
               name="schedule"
-              label="Expected appointment date"
+              label={t("expectedDate")}
               showTimeSelect
               dateFormat="MM/dd/yyyy - h:mm aa"
             />
@@ -121,14 +123,14 @@ const AppointmentForm = ({ userId, patientId, primaryPhysician, type, appointmen
                 fieldType={FormFieldType.TEXTAREA}
                 control={form.control}
                 name="reason"
-                label="Reason for appointment"
+                label={t("reasonForAppointment")}
                 placeholder="Annual monthly check-up"
               />
               <CustomFormField
                 fieldType={FormFieldType.TEXTAREA}
                 control={form.control}
                 name="note"
-                label="Additional notes"
+                label={t("additionalNotes")}
                 placeholder="Prefer afternoon appointments, if possible"
               />
             </div>
@@ -140,7 +142,7 @@ const AppointmentForm = ({ userId, patientId, primaryPhysician, type, appointmen
             fieldType={FormFieldType.TEXTAREA}
             control={form.control}
             name="cancellationReason"
-            label="Reason for cancellation"
+            label={t("reasonForCancellation")}
             placeholder="Urgent meeting came up, please reschedule"
           />
         )}

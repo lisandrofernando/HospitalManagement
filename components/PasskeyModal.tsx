@@ -3,9 +3,11 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const PasskeyModal = () => {
   const router = useRouter();
+  const { t } = useLanguage();
   const [open, setOpen] = useState(true);
   const [passkey, setPasskey] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
@@ -30,7 +32,7 @@ const PasskeyModal = () => {
   const handleSubmit = () => {
     const code = passkey.join("");
     if (code.length < 6) {
-      setError("Please enter all 6 digits.");
+      setError(t("enterAllDigits"));
       setShake(true);
       setTimeout(() => setShake(false), 500);
       return;
@@ -39,7 +41,7 @@ const PasskeyModal = () => {
       localStorage.setItem("accessKey", code);
       router.push("/admin");
     } else {
-      setError("Invalid passkey. Please try again.");
+      setError(t("invalidPasskey"));
       setShake(true);
       setTimeout(() => setShake(false), 500);
       setPasskey(["", "", "", "", "", ""]);
@@ -62,8 +64,8 @@ const PasskeyModal = () => {
         </button>
 
         <div className="mb-6 space-y-1">
-          <h2 className="text-xl font-semibold text-white">Admin Access Verification</h2>
-          <p className="text-sm text-slate-400">Enter your 6-digit passkey to access the admin panel.</p>
+          <h2 className="text-xl font-semibold text-white">{t("adminAccess")}</h2>
+          <p className="text-sm text-slate-400">{t("enterPasskey")}</p>
         </div>
 
         <div className={`flex justify-between gap-2 mb-4 ${shake ? "animate-shake" : ""}`}>
@@ -90,7 +92,7 @@ const PasskeyModal = () => {
           onClick={handleSubmit}
           className="w-full rounded-lg bg-emerald-500 py-3 text-sm font-medium text-white hover:bg-emerald-600 transition"
         >
-          Verify Passkey
+          {t("verifyPasskey")}
         </button>
       </div>
     </div>

@@ -7,7 +7,8 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import { createuser } from "@/lib/actions/patient.actions";
+import { createuser, getPatient } from "@/lib/actions/patient.actions";
+import { useLanguage } from "@/context/LanguageContext";
 
 const formSchema = z.object({
   name: z.string().trim().min(2, "Name must be at least 2 characters"),
@@ -19,6 +20,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const PatientForm = () => {
   const router = useRouter();
+  const { t } = useLanguage();
   const [countryCode, setCountryCode] = useState("+1");
   const [countryName, setCountryName] = useState("US");
   const {
@@ -154,7 +156,15 @@ const PatientForm = () => {
       });
 
       const userId = user?.$id ?? "guest";
-      router.push(`/patient/${userId}/register`);
+      const patient = await getPatient(userId);
+
+      if (patient) {
+        router.push(`/patient/${userId}/new-appointment`);
+      } else {
+        const name = encodeURIComponent(data.name.trim());
+        const email = encodeURIComponent(data.email.trim());
+        router.push(`/patient/${userId}/register?name=${name}&email=${email}`);
+      }
     } catch (error: any) {
       console.error("Failed to create patient account", error);
       setError("email", {
@@ -168,18 +178,18 @@ const PatientForm = () => {
     <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6 shadow-xl shadow-black/20">
       <div className="mb-6 space-y-2">
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-emerald-400">
-          Patient Portal
+          {t("patientPortal")}
         </p>
-        <h1 className="text-2xl font-semibold text-white">Book your visit</h1>
+        <h1 className="text-2xl font-semibold text-white">{t("bookVisit")}</h1>
         <p className="text-sm text-slate-400">
-          Enter your details to continue to CarePulse.
+          {t("enterDetails")}
         </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label className="mb-2 block text-sm text-slate-300" htmlFor="name">
-            Full name
+            {t("fullName")}
           </label>
           <input
             id="name"
@@ -194,7 +204,7 @@ const PatientForm = () => {
 
         <div>
           <label className="mb-2 block text-sm text-slate-300" htmlFor="email">
-            Email address
+            {t("emailAddress")}
           </label>
           <input
             id="email"
@@ -210,7 +220,7 @@ const PatientForm = () => {
 
         <div>
           <label className="mb-2 block text-sm text-slate-300" htmlFor="phone">
-            Phone number
+            {t("phoneNumber")}
           </label>
           <div className="flex gap-2">
             <select
@@ -249,7 +259,7 @@ const PatientForm = () => {
         </div>
 
         <Button type="submit" className="w-full bg-emerald-500 text-white hover:bg-emerald-600">
-          Continue
+          {t("continue")}
         </Button>
       </form>
     </div>
