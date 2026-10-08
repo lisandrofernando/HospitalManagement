@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import AppointmentForm from "@/components/forms/AppointmentForm";
-import { getPatient } from "@/lib/actions/patient.actions";
+import { getPatient, getUser } from "@/lib/actions/patient.actions";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
 
@@ -16,8 +16,14 @@ const NewAppointment = () => {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    getPatient(userId).then((p) => {
-      if (!p) { router.replace(`/patient/${userId}/register`); return; }
+    getPatient(userId).then(async (p) => {
+      if (!p) {
+        const user = await getUser(userId);
+        const name = user?.name ? `?name=${encodeURIComponent(user.name)}` : "";
+        const email = user?.email ? `${name ? "&" : "?"}email=${encodeURIComponent(user.email)}` : "";
+        router.replace(`/patient/${userId}/register${name}${email}`);
+        return;
+      }
       setPatient(p);
       setReady(true);
     });
